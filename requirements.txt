@@ -5,6 +5,7 @@ click
 dacite
 Flask
 Flask-SQLAlchemy
+flask-migrate
 greenlet
 gunicorn
 idna
