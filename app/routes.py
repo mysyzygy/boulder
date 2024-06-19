@@ -17,7 +17,7 @@ def register_routes(app, db):
             close = request.form['close']
             volume = request.form['volume']
 
-            person = Ticker(
+            ticker = Ticker(
                 name=name,
                 date=date,
                 open=open,
@@ -27,7 +27,7 @@ def register_routes(app, db):
                 volume=volume,
             )
 
-            db.session.add(person)
+            db.session.add(ticker)
             db.session.commit()
             tickers = Ticker.query.all()
             return render_template("index.html", tickers=tickers)
