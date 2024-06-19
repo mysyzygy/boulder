@@ -1,33 +1,45 @@
 from flask import render_template, request
-from .models import Person
+from .models import Ticker
 
 
 def register_routes(app, db):
     @app.route('/', methods=['GET', 'POST'])
     def index():
         if request.method == 'GET':
-            people = Person.query.all()
-            return render_template("index.html", people=people)
+            tickers = Ticker.query.all()
+            return render_template("index.html", tickers=tickers)
         elif request.method == 'POST':
             name = request.form['name']
-            age = int(request.form['age'])
-            job = request.form['job']
+            date = request.form['date']
+            open = request.form['open']
+            high = request.form['high']
+            low = request.form['low']
+            close = request.form['close']
+            volume = request.form['volume']
 
-            person = Person(name=name, age=age, job=job)
+            person = Ticker(
+                name=name,
+                date=date,
+                open=open,
+                high=high,
+                low=low,
+                close=close,
+                volume=volume,
+            )
 
             db.session.add(person)
             db.session.commit()
-            people = Person.query.all()
-            return render_template("index.html", people=people)
+            tickers = Ticker.query.all()
+            return render_template("index.html", tickers=tickers)
 
-    @app.route('/delete/<pid>', methods=["DELETE"])
-    def delete(pid):
-        Person.query.filter(Person.pid == pid).delete()
-        db.session.commit()
-        people = Person.query.all()
-        return render_template("index.html", people=people)
-
-    @app.route('/detail/<pid>')
-    def detail(pid):
-        person = Person.query.filter(Person.pid == pid).first()
-        return render_template('detail.html', person=person)
+    # @app.route('/delete/<pid>', methods=["DELETE"])
+    # def delete(pid):
+    #     Person.query.filter(Person.pid == pid).delete()
+    #     db.session.commit()
+    #     people = Person.query.all()
+    #     return render_template("index.html", people=people)
+    #
+    # @app.route('/detail/<pid>')
+    # def detail(pid):
+    #     person = Person.query.filter(Person.pid == pid).first()
+    #     return render_template('detail.html', person=person)

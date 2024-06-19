@@ -2,10 +2,13 @@
 {% block title %}Index{% endblock %}
 
 {% block content %}
-<h1>Person {{ person.pid }}</h1>
+<h1>Tickers {{ ticker.name }}</h1>
 
-<p>Name: {{ person.name }}</p>
-<p>Age: {{ person.age }}</p>
-<p>Job: {{ person.job }}</p>
+<p>Date: {{ ticker.date }}</p>
+<p>Open: {{ ticker.open }}</p>
+<p>High: {{ ticker.high }}</p>
+<p>Low: {{ ticker.low }}</p>
+<p>Close: {{ ticker.close }}</p>
+<p>Volume: {{ ticker.volume }}</p>
 
 {% endblock %}
