@@ -3,6 +3,7 @@ import requests
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import migrate, Migrate
+
 from datetime import datetime
 import os
 from config import Config

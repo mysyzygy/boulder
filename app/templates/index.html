@@ -12,8 +12,8 @@
 
     <h3>New Ticker</h3>
     <form action="{{ url_for("index")}}" method="POST">
-        <input type="text" name="name" placeholder="Name"
-               required="required"><br>
+        <input type="text" name="symbol_date_id" placeholder="ID"><br>
+        <input type="text" name="symbol" placeholder="Symbol"><br>
         <input type="date" name="date" placeholder="Date"><br>
         <input type="number" name="open" placeholder="Open"><br>
         <input type="number" name="high" placeholder="High"><br>
@@ -23,20 +23,17 @@
         <input type="submit" value="Create">
     </form>
 
-{#    <script type="text/javascript">#}
-{#        function deletePerson(pid) {#}
-{#            fetch('{{ url_for("delete", pid=pid) }}' + pid, {#}
-{#                method: 'DELETE'#}
-{#            }).then(response => {#}
-{#                if (response.ok) {#}
-{#                window.location.reload();#}
-{#                } else {#}
-{#                    console.error('Failed to delete item with pid: ', pid);#}
-{#                }#}
-{#            })#}
-{#                .catch(error => {#}
-{#                    console.error('Error during fetching:', error);#}
-{#                })#}
-{#        }#}
+{# <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>#}
+{#    <script>#}
+{#        document.addEventListener('DOMContentLoaded', (event) => {#}
+{#            var socket = io.connect('http://' + document.domain + ':' + location.port);#}
+{##}
+{#            // Listen for events from the backend#}
+{#            socket.on('price_event', function(msg) {#}
+{#                console.log('Received price event:', msg.data);#}
+{#                // Update your frontend here with the received data#}
+                {#tickers.query().all()#}
+{#            });#}
+{#        });#}
 {#    </script>#}
 {% endblock %}

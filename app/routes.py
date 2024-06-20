@@ -9,7 +9,8 @@ def register_routes(app, db):
             tickers = Ticker.query.all()
             return render_template("index.html", tickers=tickers)
         elif request.method == 'POST':
-            name = request.form['name']
+            symbol_date_id = request.form['symbol_date_id']
+            symbol = request.form['symbol']
             date = request.form['date']
             open = request.form['open']
             high = request.form['high']
@@ -18,7 +19,8 @@ def register_routes(app, db):
             volume = request.form['volume']
 
             ticker = Ticker(
-                name=name,
+                symbol_date_id=symbol_date_id,
+                symbol=symbol,
                 date=date,
                 open=open,
                 high=high,

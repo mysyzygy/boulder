@@ -2,8 +2,9 @@
 {% block title %}Index{% endblock %}
 
 {% block content %}
-<h1>Tickers {{ ticker.name }}</h1>
+<h1>Tickers {{ ticker.symbol_date_id }}</h1>
 
+<p>Date: {{ ticker.symbol }}</p>
 <p>Date: {{ ticker.date }}</p>
 <p>Open: {{ ticker.open }}</p>
 <p>High: {{ ticker.high }}</p>

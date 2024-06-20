@@ -32,3 +32,4 @@ urllib3
 Werkzeug
 psycopg2-binary
 polygon-api-client
+flask_socketio
