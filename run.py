@@ -3,13 +3,17 @@ from data import polygon_helper
 import threading
 from flask_socketio import SocketIO
 
+import logging
+logging.getLogger().addHandler(logging.StreamHandler())
+logging.getLogger().setLevel(logging.DEBUG)
+
 app = create_app()
 
 if __name__ == '__main__':
-    socketio = SocketIO(app)
+    # socketio = SocketIO(app)
     print("Starting websocket server...")
     t1 = threading.Thread(target=polygon_helper.run_client,
-                          args=("APPL", socketio))
+                          args=("XAS.BTC-USD",))
     t1.start()
-    socketio.run(app=app, host='0.0.0.0', debug=True, allow_unsafe_werkzeug=True)
+    app.run(host='0.0.0.0', debug=True)
     t1.join()
