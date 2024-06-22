@@ -1,7 +1,7 @@
 
 
 from app import db
-
+import json
 
 class Ticker(db.Model):
     __tablename__ = 'tickers'
@@ -19,3 +19,16 @@ class Ticker(db.Model):
                 f' {self.date}, Open: {self.open},'
                 f'High {self.high}, Low: {self.low}, Close {self.close},'
                 f'Volume: {self.volume}')
+
+    def to_dict(self):
+        return {"symbol_date_id": self.symbol_date_id,
+                "symbol": self.symbol,
+                "date": self.date,
+                "open": self.open,
+                "high": self.high,
+                "low": self.low,
+                "close": self.close,
+                "volume": self.volume
+                }
+    def to_json(self):
+        return json.dumps(self.to_dict())

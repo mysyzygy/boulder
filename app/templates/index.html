@@ -22,18 +22,24 @@
         <input type="number" name="volume" placeholder="Volume"><br>
         <input type="submit" value="Create">
     </form>
+    <body>
+        <h1>Real-Time Price Update</h1>
+        <div id="result">Waiting for price updates...</div>
+    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var socket = io.connect(window.location.protocol + '//' + document.domain + ':' + location.port);
 
-{# <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>#}
-{#    <script>#}
-{#        document.addEventListener('DOMContentLoaded', (event) => {#}
-{#            var socket = io.connect('http://' + document.domain + ':' + location.port);#}
-{##}
-{#            // Listen for events from the backend#}
-{#            socket.on('price_event', function(msg) {#}
-{#                console.log('Received price event:', msg.data);#}
-{#                // Update your frontend here with the received data#}
-                {#tickers.query().all()#}
-{#            });#}
-{#        });#}
-{#    </script>#}
+            // Listen for events from the backend
+            socket.on('price_event', function(msg) {
+                 console.log('Received price event:', msg);  // Log the entire message object
+                if (msg && msg.data !== undefined) {
+                    document.getElementById('result').innerText = msg.data;
+                } else {
+                    console.error('Received message is undefined or missing data property');
+                }
+            });
+        });
+    </script>
 {% endblock %}
