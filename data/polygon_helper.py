@@ -17,10 +17,10 @@ client = WebSocketClient(market=Market.Crypto)  #
 # environment variable
 # is used
 
+
 def handle_msg(app, socketio, msgs: List[WebSocketMessage]):
     with app.app_context():
         for m in msgs:
-            # print(m)
             s = m.end_timestamp / 1000.0
             time = datetime.datetime.fromtimestamp(s).strftime('%Y-%m-%d '
                                                              '%H:%M:%S.%f')
@@ -47,3 +47,4 @@ def run_client(symbols, app, socketio):
     client.subscribe(symbols)
     f = partial(handle_msg, app, socketio)
     client.run(f)
+

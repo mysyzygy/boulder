@@ -27,6 +27,12 @@
         <div id="result">Waiting for price updates...</div>
     </body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+    var socket = io();
+    socket.on('connect', function() {
+        socket.emit('connected', {data: 'success'});
+    });
+</script>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             var socket = io.connect(window.location.protocol + '//' + document.domain + ':' + location.port);
