@@ -11,6 +11,8 @@ from app import db
 from app.models import Ticker
 import datetime
 from functools import partial
+import logging
+
 
 client = WebSocketClient(market=Market.Crypto)  #
 # POLYGON_API_KEY
