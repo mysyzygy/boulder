@@ -8,10 +8,11 @@ import logging
 logging.getLogger().addHandler(logging.StreamHandler())
 logging.getLogger().setLevel(logging.INFO)
 
+app = create_app()
+socketio = SocketIO(app)
 
 if __name__ == '__main__':
-    app = create_app()
-    socketio = SocketIO(app)
+
     print("Starting websocket server...")
     t1 = Thread(target=polygon_helper.run_client,
                           args=("XAS.BTC-USD", app, socketio))
