@@ -11,13 +11,12 @@ logging.getLogger().setLevel(logging.INFO)
 app = create_app()
 socketio = SocketIO(app)
 
-if __name__ == '__main__':
 
-    print("Starting websocket server...")
-    t1 = Thread(target=polygon_helper.run_client,
-                          args=("XAS.BTC-USD", app, socketio))
-    t1.start()
+print("Starting websocket server...")
+t1 = Thread(target=polygon_helper.run_client,
+                      args=("XAS.BTC-USD", app, socketio))
+t1.start()
 
-    socketio.run(app=app, host='0.0.0.0', debug=True,
-                 allow_unsafe_werkzeug=True, use_reloader=False)
-    t1.join()
+socketio.run(app=app, host='0.0.0.0', debug=True,
+             allow_unsafe_werkzeug=True, use_reloader=False)
+t1.join()
