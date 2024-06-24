@@ -1,9 +1,11 @@
 from random import random
 
 from polygon import WebSocketClient
-from polygon.websocket.models import *
+
 from typing import List
 import sqlalchemy
+from polygon.websocket import Market, WebSocketMessage
+
 from app import db
 from app.models import Ticker
 import datetime
@@ -37,7 +39,7 @@ def handle_msg(app, socketio, msgs: List[WebSocketMessage]):
                 db.session.commit()
                 socketio.emit("price_event", {"data": str(ticker.close)})
             except sqlalchemy.exc.IntegrityError as e:
-                logging.error(e)
+                print(e)
 
 
 def run_client(symbols, app, socketio):
