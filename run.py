@@ -17,6 +17,5 @@ print("Starting websocket server...")
 #                       args=("XAS.BTC-USD", app, socketio))
 # t1.start()
 
-socketio.run(app=app, host='0.0.0.0',
-             allow_unsafe_werkzeug=True, use_reloader=False)
+socketio.run(app=app, use_reloader=False)
 # t1.join()
