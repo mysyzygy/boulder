@@ -40,7 +40,7 @@ def handle_msg(app, socketio, msgs: List[WebSocketMessage]):
                 db.session.commit()
                 socketio.emit("price_event", {"data": str(ticker.close)})
             except sqlalchemy.exc.IntegrityError as e:
-                print(e)
+                logging.error(e)
 
 
 def run_client(symbols, app, socketio):

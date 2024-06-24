@@ -13,12 +13,12 @@ socketio = SocketIO(app,  async_mode='gevent', logger=True)
 
 @socketio.on('connected')
 def handle_my_custom_event(json):
-    print('RECEIVED CONNECTED EVENT!!!')
+    logging.debug('RECEIVED CONNECTED EVENT!!!')
 
 
 @socketio.event
 def price_event(json):
-    print('RECEIVED PRICE EVENT!!!!')
+    logging.debug('RECEIVED PRICE EVENT!!!!')
 
 
 print("Starting websocket server...")
