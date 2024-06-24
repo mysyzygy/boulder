@@ -9,7 +9,13 @@ logging.getLogger().addHandler(logging.StreamHandler())
 logging.getLogger().setLevel(logging.DEBUG)
 
 app = create_app()
-socketio = SocketIO(app)
+socketio = SocketIO(app, logger=True, engineio_logger=True)
+
+
+@socketio.event
+def price_event(data):
+    print('received message: ' + data)
+
 
 print("Starting websocket server...")
 t1 = Thread(target=polygon_helper.run_client,
@@ -19,3 +25,4 @@ t1.start()
 if __name__ == '__main__':
     socketio.run(app=app, debug=True, use_reloader=False)
 t1.join()
+
