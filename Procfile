@@ -1,1 +1,1 @@
-web: gunicorn -k gevent run:socketio
+web: gunicorn -k gevent run:app
