@@ -6,7 +6,7 @@ import time
 
 import logging
 logging.getLogger().addHandler(logging.StreamHandler())
-logging.getLogger().setLevel(logging.INFO)
+logging.getLogger().setLevel(logging.DEBUG)
 
 app = create_app()
 socketio = SocketIO(app)
