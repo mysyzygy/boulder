@@ -4,7 +4,9 @@ from polygon import WebSocketClient
 
 from typing import List
 import sqlalchemy
-from polygon.websocket import Market, WebSocketMessage
+from polygon.websocket.models.common import Market
+from polygon.websocket.models.models import WebSocketMessage
+
 
 from app import db
 from app.models import Ticker
