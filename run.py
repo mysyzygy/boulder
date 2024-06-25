@@ -5,7 +5,6 @@ from app import create_app
 from data import polygon_helper
 from threading import Thread
 from flask_socketio import SocketIO
-import time
 
 import logging
 logging.getLogger().addHandler(logging.StreamHandler())
@@ -13,6 +12,7 @@ logging.getLogger().setLevel(logging.DEBUG)
 
 app = create_app()
 socketio = SocketIO(app,  async_mode='eventlet', logger=True)
+
 
 @socketio.on('connected')
 def handle_my_custom_event(json):
