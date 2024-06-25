@@ -26,8 +26,8 @@ def handle_price_event(json):
 
 print("Starting websocket server...")
 t1 = Thread(target=polygon_helper.run_client,
-            args=("XAS.BTC-USD", app, socketio))
-            # args=("XA.BTC-USD", app, socketio))
+            # args=("XAS.BTC-USD", app, socketio))  # Aggregate Seconds
+            args=("XA.BTC-USD", app, socketio))     # Aggregate Minutes
 t1.start()
 
 if __name__ == '__main__':
