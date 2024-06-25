@@ -1,3 +1,6 @@
+import eventlet
+eventlet.monkey_patch()
+
 from app import create_app
 from data import polygon_helper
 from threading import Thread
