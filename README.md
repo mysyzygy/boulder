@@ -8,16 +8,22 @@ App is currently hosted here:
 
 https://djone-ba5640b7e107.herokuapp.com/
 
-**Setup** 
+**Setup Data Credentials** 
 
 Goto https://polygon.io/ create an account and subscribe to currency data 
 starter account.
 
 Create a POLYGON_API_KEY environment variable.
 
-**Building**
+**Install Requirements**
 
-/trading_app$ pip install -e . -r requirements.txt
+$ pip install -e . -r requirements.txt
+
+**Setup Database**
+
+$ flask db init
+$ flask db migrate -m "new migration"
+$ flask db upgrade
 
 **Running**
 
