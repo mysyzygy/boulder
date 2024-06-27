@@ -3,28 +3,20 @@
 
 
 {% block content %}
-<h1>Index Page</h1>
+<h1>Current Bitcoin Prices</h1>
     <ul>
     {% for ticker in tickers %}
         <li>{{ ticker }}</li>
     {% endfor %}
     </ul>
-
-    <h3>New Ticker</h3>
-    <form action="{{ url_for("index")}}" method="POST">
-        <input type="text" name="symbol_date_id" placeholder="ID"><br>
-        <input type="text" name="symbol" placeholder="Symbol"><br>
-        <input type="date" name="date" placeholder="Date"><br>
-        <input type="number" name="open" placeholder="Open"><br>
-        <input type="number" name="high" placeholder="High"><br>
-        <input type="number" name="low" placeholder="Low"><br>
-        <input type="number" name="close" placeholder="Close"><br>
-        <input type="number" name="volume" placeholder="Volume"><br>
-        <input type="submit" value="Create">
-    </form>
-    <body>
-    <h1>Real-Time Price Update</h1>
-    <div id="result">Waiting for price updates...</div>
+    <h1>Order Book</h1>
+     <ul>
+    {% for order in orders %}
+        <li>{{ order }}</li>
+    {% endfor %}
+    </ul>
+    <h1>Current Cash</h1>
+    <div id="result">Waiting for cash updates...</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
@@ -38,35 +30,13 @@
             socket.on('price_event', function(msg) {
                 console.log('Received price event:', msg);  // Log the entire message object
                 if (msg && msg.data !== undefined) {
-                    document.getElementById('result').innerText = msg.data;
+                    location.replace(location.href);
+                    document.getElementById('result').innerText = msg.cash;
                     socket.emit('special_price_event', msg);
-                } else {
-                    console.error('Received message is undefined or missing data property');
-                }
-            });
-
-            // Listen for buy_order from the backend
-            socket.on('buy_order', function(msg) {
-                console.log('Received buy order:', msg);  // Log the entire message object
-                if (msg && msg.data !== undefined) {
-                    document.getElementById('result').innerText = msg.data;
-                    socket.emit('special_buy_order', msg);
-                } else {
-                    console.error('Received message is undefined or missing data property');
-                }
-            });
-
-            // Listen for sell_order from the backend
-            socket.on('sell_order', function(msg) {
-                console.log('Received sell order:', msg);  // Log the entire message object
-                if (msg && msg.data !== undefined) {
-                    document.getElementById('result').innerText = msg.data;
-                    socket.emit('special_sell_order', msg);
                 } else {
                     console.error('Received message is undefined or missing data property');
                 }
             });
         });
     </script>
-    </body>
 {% endblock %}

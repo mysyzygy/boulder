@@ -48,7 +48,8 @@ def handle_msg(app, socketio, strategy, msgs: List[WebSocketMessage]):
 
             strategy.analyze(ticker)
 
-            socketio.emit("price_event", {"data": str(ticker.close)})
+            socketio.emit("price_event", {"cash": str(
+                strategy.portfolio.cash)})
             socketio.sleep(0)
 
 

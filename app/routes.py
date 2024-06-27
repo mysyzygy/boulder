@@ -1,13 +1,19 @@
 from flask import render_template, request
-from .models import Ticker
+from .models import Ticker, Order
 
 
 def register_routes(app, db):
     @app.route('/', methods=['GET', 'POST'])
     def index():
         if request.method == 'GET':
-            tickers = Ticker.query.all()
-            return render_template("index.html", tickers=tickers)
+            tickers = db.session.query(Ticker).order_by(Ticker.date.desc()).limit(
+            10).all()
+            orders = db.session.query(Order).order_by(
+                Order.date.desc()).limit(
+                10).all()
+            return render_template("index.html",
+                                   tickers=tickers,
+                                   orders=orders)
         elif request.method == 'POST':
             symbol_date_id = request.form['symbol_date_id']
             symbol = request.form['symbol']
