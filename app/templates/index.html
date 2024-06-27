@@ -23,63 +23,44 @@
         <input type="submit" value="Create">
     </form>
     <body>
-        <h1>Real-Time Price Update</h1>
-        <div id="result">Waiting for price updates...</div>
-    </body>
+    <h1>Real-Time Price Update</h1>
+    <div id="result">Waiting for price updates...</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    <script type="text/javascript" charset="utf-8">
-    var socket = io();
-    socket.on('connect', function() {
-        socket.emit('connected', {data: 'success'});
-    });
-</script>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             var socket = io.connect(window.location.protocol + '//' + document.domain + ':' + location.port);
 
-            // Listen for events from the backend
+            socket.on('connect', function() {
+                socket.emit('connected', {data: 'success'});
+            });
+
+            // Listen for price_event from the backend
             socket.on('price_event', function(msg) {
-                 console.log('Received price event:', msg);  // Log the entire message object
+                console.log('Received price event:', msg);  // Log the entire message object
                 if (msg && msg.data !== undefined) {
                     document.getElementById('result').innerText = msg.data;
-                    // for some reason this is the only way to communicate
-                    // the update
                     socket.emit('special_price_event', msg);
                 } else {
                     console.error('Received message is undefined or missing data property');
                 }
             });
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            var socket = io.connect(window.location.protocol + '//' + document.domain + ':' + location.port);
 
-            // Listen for events from the backend
+            // Listen for buy_order from the backend
             socket.on('buy_order', function(msg) {
-                 console.log('Received price event:', msg);  // Log the entire message object
+                console.log('Received buy order:', msg);  // Log the entire message object
                 if (msg && msg.data !== undefined) {
                     document.getElementById('result').innerText = msg.data;
-                    // for some reason this is the only way to communicate
-                    // the update
                     socket.emit('special_buy_order', msg);
                 } else {
                     console.error('Received message is undefined or missing data property');
                 }
             });
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            var socket = io.connect(window.location.protocol + '//' + document.domain + ':' + location.port);
 
-            // Listen for events from the backend
+            // Listen for sell_order from the backend
             socket.on('sell_order', function(msg) {
-                 console.log('Received price event:', msg);  // Log the entire message object
+                console.log('Received sell order:', msg);  // Log the entire message object
                 if (msg && msg.data !== undefined) {
                     document.getElementById('result').innerText = msg.data;
-                    // for some reason this is the only way to communicate
-                    // the update
                     socket.emit('special_sell_order', msg);
                 } else {
                     console.error('Received message is undefined or missing data property');
@@ -87,4 +68,5 @@
             });
         });
     </script>
+    </body>
 {% endblock %}

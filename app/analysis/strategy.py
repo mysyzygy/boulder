@@ -18,9 +18,9 @@ class Strategy:
         close_prices = np.array([price.close for price in prices])
         trend = np.sum(np.diff(close_prices))
         if trend > 5:
-            self.socketio.emit('buy_order', prices[0].to_json())
+            self.socketio.emit('buy_order', {"price": prices[0].close})
             self.socketio.sleep(0)
         elif trend < -5:
-            self.socketio.emit('sell_order', prices[0].to_json())
+            self.socketio.emit('sell_order', {"price": prices[0].close})
             self.socketio.sleep(0)
 

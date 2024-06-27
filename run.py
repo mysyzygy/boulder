@@ -41,13 +41,12 @@ def handle_sell_event(data):
     portfolio.sell(data)
 
 
-
 print("Starting websocket server...")
 socketio.start_background_task(polygon_helper.run_client,
             "XAS.BTC-USD", app, socketio)  # Aggregate Seconds
             # "XA.BTC-USD", app, socketio)     # Aggregate Minutes
 
 if __name__ == '__main__':
-    socketio.run(app=app, debug=True, use_reloader=False)
+    socketio.run(app=app, debug=True, use_reloader=False, allow_unsafe_werkzeug=True)
 
 
