@@ -9,6 +9,9 @@ from polygon.websocket.models.models import WebSocketMessage
 
 from app import db
 from app.models import Ticker
+from app.analysis.strategy import Strategy
+from app.analysis.portfolio import Portfolio
+
 import datetime
 from functools import partial
 import logging
@@ -20,7 +23,7 @@ client = WebSocketClient(market=Market.Crypto)  #
 # is used
 
 
-def handle_msg(app, socketio, msgs: List[WebSocketMessage]):
+def handle_msg(app, socketio, strategy, msgs: List[WebSocketMessage]):
     with app.app_context():
         for m in msgs:
             s = m.end_timestamp / 1000.0
@@ -40,14 +43,21 @@ def handle_msg(app, socketio, msgs: List[WebSocketMessage]):
             try:
                 db.session.add(ticker)
                 db.session.commit()
-                socketio.emit("price_event", {"data": str(ticker.close)})
-                socketio.sleep(0)
             except sqlalchemy.exc.IntegrityError as e:
                 logging.error(e)
+
+            strategy.analyze(ticker)
+
+            socketio.emit("price_event", {"data": str(ticker.close)})
+            socketio.sleep(0)
+
 
 
 def run_client(symbols, app, socketio):
     client.subscribe(symbols)
-    f = partial(handle_msg, app, socketio)
+    portfolio = Portfolio(app, cash=100000)
+    strategy = Strategy(portfolio)
+    f = partial(handle_msg, app, socketio, strategy)
+
     client.run(f)
 

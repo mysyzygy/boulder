@@ -1,36 +1,59 @@
 from datetime import datetime
 from app import db
-from app.models import Order
+from app.models import Order, Ticker
+
 from sqlalchemy import select
 import logging
 
 class Portfolio:
-    def __init__(self, socketio, cash):
+    def __init__(self, app, cash):
         self.cash = cash
+        self.app = app
         self.db = db
-        self.id_ctr = 0
+        self.id_ctr = self.get_latest_order_id() + 1
 
-    def buy(self, data):
-        logging.info("BUY ORDER RECIEVED!!!")
+    def get_latest_order_id(self):
+        with self.app.app_context():
+            result = self.db.session.query(Order).order_by(Order.id.desc(
+            )).limit(
+                1).all()
+        return result[0].id
+
+
+    def buy(self, symbol, price, shares):
+        logging.info("BUY ORDER RECEIVED!!!")
         date = datetime.now()
-        order = Order(self.id_ctr,
-                      data["symbol"],
-                      date,
-                      data["shares"],
-                      data["price"],
-                      "buy")
+        order = Order(
+            id=self.id_ctr,
+            symbol=symbol,
+            date=date,
+            shares=shares,
+            price=price,
+            transaction="buy"
+        )
         self.db.session.add(order)
         self.db.session.commit()
+        self.cash -= price * shares
         self.id_ctr += 1
+        logging.info(f"Cash Balance: {self.cash}")
 
-    def sell(self, symbol, shares):
+    def sell(self, symbol, price, shares):
 
-        logging.info("SELL ORDER RECIEVED!!!")
+        logging.info("SELL ORDER RECEIVED!!!")
         date = datetime.now()
-        order = Order(self.id_ctr, symbol, shares)
+        order = Order(
+            id=self.id_ctr,
+            symbol=symbol,
+            date=date,
+            shares=shares,
+            price=price,
+            transaction="sell"
+        )
         self.db.session.add(order)
         self.db.session.commit()
+        self.cash += price * shares
         self.id_ctr += 1
+        logging.info(f"Cash Balance: {self.cash}")
 
     def get_orders(self, amount=10):
         orders = self.db.execute(select(Order).order_by("id", reversed).limit(

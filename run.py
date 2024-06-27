@@ -1,5 +1,4 @@
-from app.analysis.strategy import Strategy
-from app.analysis.portfolio import Portfolio
+
 
 from app import create_app
 from app.data import polygon_helper
@@ -15,8 +14,6 @@ socketio = SocketIO(app,  async_mode='threading',
                     logger=True
                     )
 
-portfolio = Portfolio(socketio, cash=100000)
-strategy = Strategy(socketio)
 
 @socketio.on('connected')
 def handle_my_custom_event(json):
@@ -26,25 +23,13 @@ def handle_my_custom_event(json):
 @socketio.on("special_price_event")
 def handle_price_event(data):
     logging.debug('RECEIVED PRICE EVENT!!!!')
-    strategy.analyze()
 
-
-@socketio.on("special_buy_order")
-def handle_buy_event(data):
-    logging.info('RECEIVED BUY ORDER EVENT!!!!')
-    portfolio.buy(data)
-
-
-@socketio.on("special_sell_order")
-def handle_sell_event(data):
-    logging.info('RECEIVED SELL ORDER EVENT!!!!')
-    portfolio.sell(data)
 
 
 print("Starting websocket server...")
 socketio.start_background_task(polygon_helper.run_client,
-            # "XAS.BTC-USD", app, socketio)  # Aggregate Seconds
-            "XA.BTC-USD", app, socketio)     # Aggregate Minutes
+            "XAS.BTC-USD", app, socketio)  # Aggregate Seconds
+            # "XA.BTC-USD", app, socketio)     # Aggregate Minutes
 
 if __name__ == '__main__':
     socketio.run(app=app, debug=True, use_reloader=False, allow_unsafe_werkzeug=True)
