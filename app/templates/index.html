@@ -42,6 +42,7 @@
                  console.log('Received price event:', msg);  // Log the entire message object
                 if (msg && msg.data !== undefined) {
                     document.getElementById('result').innerText = msg.data;
+                    socket.emit('special', msg);
                 } else {
                     console.error('Received message is undefined or missing data property');
                 }
