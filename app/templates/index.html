@@ -42,7 +42,45 @@
                  console.log('Received price event:', msg);  // Log the entire message object
                 if (msg && msg.data !== undefined) {
                     document.getElementById('result').innerText = msg.data;
-                    socket.emit('special', msg);
+                    // for some reason this is the only way to communicate
+                    // the update
+                    socket.emit('special_price_event', msg);
+                } else {
+                    console.error('Received message is undefined or missing data property');
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var socket = io.connect(window.location.protocol + '//' + document.domain + ':' + location.port);
+
+            // Listen for events from the backend
+            socket.on('buy_order', function(msg) {
+                 console.log('Received price event:', msg);  // Log the entire message object
+                if (msg && msg.data !== undefined) {
+                    document.getElementById('result').innerText = msg.data;
+                    // for some reason this is the only way to communicate
+                    // the update
+                    socket.emit('special_buy_order', msg);
+                } else {
+                    console.error('Received message is undefined or missing data property');
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var socket = io.connect(window.location.protocol + '//' + document.domain + ':' + location.port);
+
+            // Listen for events from the backend
+            socket.on('sell_order', function(msg) {
+                 console.log('Received price event:', msg);  // Log the entire message object
+                if (msg && msg.data !== undefined) {
+                    document.getElementById('result').innerText = msg.data;
+                    // for some reason this is the only way to communicate
+                    // the update
+                    socket.emit('special_sell_order', msg);
                 } else {
                     console.error('Received message is undefined or missing data property');
                 }

@@ -1,17 +1,19 @@
-from analysis.Strategy import Strategy
-from analysis.portfolio import Portfolio
+from app.analysis.strategy import Strategy
+from app.analysis.portfolio import Portfolio
 
 from app import create_app
-from data import polygon_helper
+from app.data import polygon_helper
 from threading import Thread
 from flask_socketio import SocketIO
 
 import logging
 logging.getLogger().addHandler(logging.StreamHandler())
-logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger().setLevel(logging.INFO)
 
 app = create_app()
-socketio = SocketIO(app,  async_mode='threading', logger=True)
+socketio = SocketIO(app,  async_mode='threading',
+                    logger=True
+                    )
 
 portfolio = Portfolio(socketio, cash=100000)
 strategy = Strategy(socketio)
@@ -21,10 +23,23 @@ def handle_my_custom_event(json):
     logging.debug('RECEIVED CONNECTED EVENT!!!')
 
 
-@socketio.on("special")
+@socketio.on("special_price_event")
 def handle_price_event(data):
     logging.debug('RECEIVED PRICE EVENT!!!!')
-    strategy.analyze(data)
+    strategy.analyze()
+
+
+@socketio.on("special_buy_order")
+def handle_buy_event(data):
+    logging.info('RECEIVED BUY ORDER EVENT!!!!')
+    portfolio.buy(data)
+
+
+@socketio.on("special_sell_order")
+def handle_sell_event(data):
+    logging.info('RECEIVED SELL ORDER EVENT!!!!')
+    portfolio.sell(data)
+
 
 
 print("Starting websocket server...")

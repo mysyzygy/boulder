@@ -2,17 +2,16 @@ from datetime import datetime
 from app import db
 from app.models import Order
 from sqlalchemy import select
-
+import logging
 
 class Portfolio:
     def __init__(self, socketio, cash):
         self.cash = cash
         self.db = db
         self.id_ctr = 0
-        socketio.on_event('buy_event', self.buy)
-        socketio.on_event('sell_event', self.sell)
 
     def buy(self, data):
+        logging.info("BUY ORDER RECIEVED!!!")
         date = datetime.now()
         order = Order(self.id_ctr,
                       data["symbol"],
@@ -25,6 +24,8 @@ class Portfolio:
         self.id_ctr += 1
 
     def sell(self, symbol, shares):
+
+        logging.info("SELL ORDER RECIEVED!!!")
         date = datetime.now()
         order = Order(self.id_ctr, symbol, shares)
         self.db.session.add(order)
