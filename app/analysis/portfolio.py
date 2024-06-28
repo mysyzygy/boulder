@@ -14,10 +14,13 @@ class Portfolio:
 
     def get_latest_order_id(self):
         with self.app.app_context():
-            result = self.db.session.query(Order).order_by(Order.id.desc(
-            )).limit(
-                1).all()
-        return result[0].id
+            try:
+                result = self.db.session.query(Order).order_by(Order.id.desc(
+                )).limit(
+                    1).all()
+                return result[0].id
+            except Exception as e:
+                return 0
 
 
     def buy(self, symbol, price, shares):
